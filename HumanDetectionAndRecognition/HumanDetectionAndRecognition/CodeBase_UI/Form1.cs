@@ -14,6 +14,7 @@ using Emgu.Util;
 using Emgu.CV.Structure;
 using Emgu.CV.Util;
 using System.IO;
+using HumanDetectionAndRecognition.CodeBase_UI.Classes;
 
 
 namespace HumanDetectionAndRecognition
@@ -21,11 +22,12 @@ namespace HumanDetectionAndRecognition
     public partial class Form1 : Form
     {
         Capture capt = null;
-      //  DetectionAndTracking detecObj;
+        HumanDetectTrackMain detecObj;
 
         public Form1()
         {
             InitializeComponent();
+            detecObj = new HumanDetectTrackMain();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -36,7 +38,8 @@ namespace HumanDetectionAndRecognition
             img = capt.QueryFrame();
             if (img != null)
             {
-                imageBox1.Image = img;
+                ret_image = detecObj.DetectAndTrack(img);
+                imageBox1.Image = ret_image;
             }
 
 
