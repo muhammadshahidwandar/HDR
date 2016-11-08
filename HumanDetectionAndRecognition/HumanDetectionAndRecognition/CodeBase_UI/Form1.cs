@@ -10,11 +10,10 @@ using System.Windows.Forms;
 
 using Emgu.CV;
 using Emgu.Util;
-//using HumanDetectionAndTracking;
 using Emgu.CV.Structure;
 using Emgu.CV.Util;
 using System.IO;
-using HumanDetectionAndRecognition.CodeBase_UI.Classes;
+using HumanDetectionAndRecognition;
 
 
 namespace HumanDetectionAndRecognition
@@ -33,7 +32,7 @@ namespace HumanDetectionAndRecognition
         private void timer1_Tick(object sender, EventArgs e)
         {
 
-            Mat img;
+      /*      Mat img;
             Image<Gray, Byte> ret_image;
             img = capt.QueryFrame();
             if (img != null)
@@ -42,12 +41,17 @@ namespace HumanDetectionAndRecognition
                 imageBox1.Image = ret_image;
             }
 
-
+            */
         }
 
         private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
         {
-            capt = new Capture(openFileDialog1.FileName);
+            //capt = new Capture(openFileDialog1.FileName);
+            Mat img;
+            Image<Gray, Byte> ret_image;
+            img = CvInvoke.Imread(openFileDialog1.FileName, Emgu.CV.CvEnum.LoadImageType.AnyColor); //
+            ret_image = detecObj.DetectAndTrack(img);
+            imageBox1.Image = ret_image;
 
         }
 

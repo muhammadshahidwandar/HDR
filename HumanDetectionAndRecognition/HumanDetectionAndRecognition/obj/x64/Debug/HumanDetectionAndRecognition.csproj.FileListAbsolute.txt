@@ -14,3 +14,4 @@ C:\Users\shahid\Documents\HDR\HumanDetectionAndRecognition\HumanDetectionAndReco
 C:\Users\shahid\Documents\HDR\HumanDetectionAndRecognition\HumanDetectionAndRecognition\obj\x64\Debug\HumanDetectionAndRecognition.csproj.GenerateResource.Cache
 C:\Users\shahid\Documents\HDR\HumanDetectionAndRecognition\HumanDetectionAndRecognition\obj\x64\Debug\HumanDetectionAndRecognition.exe
 C:\Users\shahid\Documents\HDR\HumanDetectionAndRecognition\HumanDetectionAndRecognition\obj\x64\Debug\HumanDetectionAndRecognition.pdb
+C:\Users\shahid\Documents\HDR\HumanDetectionAndRecognition\HumanDetectionAndRecognition\obj\x64\Debug\HumanDetectionAndRecognition.csprojResolveAssemblyReference.cache
