@@ -23,6 +23,7 @@ namespace HumanDetectionAndRecognition
         ConnectedComponent _connectedCompObj;
         AppearanceBasdTracking _tracking;
         Classification _classification;
+        int Threshold = 100;
         public HumanDetectTrackMain()
         {
             _bgSubrctObj = new BackgroundSubtractorMOG();
@@ -60,9 +61,9 @@ namespace HumanDetectionAndRecognition
                 }
             }
             Load();
-            // humans = classify(connectedComp);
-           // trainImage(connectedComp[0].Silhouette);
-           // Save();
+               humans = classify(connectedComp);
+             //trainImage(connectedComp[0].Silhouette);
+            // Save();
              imgReturn = connectedComp[0].Silhouette;
             return imgReturn;
 
@@ -86,6 +87,20 @@ namespace HumanDetectionAndRecognition
         public void Load()
         {
             _classification.LoadFeatureVectors();
+        }
+        /// <summary>
+        /// Human Classification Code :)
+        /// Determine if the Connected component is Human or not.
+        /// </summary>
+        /// <param name="list">list of connected components to be classified</param>
+        /// <returns>list of Humans</returns>
+        public List<ComponentData> classify(List<ComponentData> list)
+        {
+            List<ComponentData> humans = new List<ComponentData>();
+            for (int i = 0; i < list.Count; i++)
+                if (_classification.Classify_Image(list[i].Silhouette, Threshold))
+                    humans.Add(list[i]);
+            return humans;
         }
     }
 }

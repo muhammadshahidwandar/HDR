@@ -57,7 +57,7 @@ namespace HumanDetectionAndRecognition
             {
                 for (int a = 0; a < _vectorsFeature.Count; a++)
                 {
-                    for (int j = 0; j < 20; j++)
+                    for (int j = 0; j < 40; j++)
                     {
                         _vectorDiss += Math.Abs(_vectorsFeature[a][j] - _trainVF[i][j]);
                     }
@@ -72,11 +72,11 @@ namespace HumanDetectionAndRecognition
 
             if (_minDis < Threshold)
             {
-                //MessageBox.Show("It's Human ya Man");
+                MessageBox.Show("It's Human");
                 return true;
             }
 
-            //MessageBox.Show("It Isn't Human ya Man");
+            MessageBox.Show("No it Isn't Human");
             return false;
         }
         /// <summary>
@@ -223,7 +223,7 @@ namespace HumanDetectionAndRecognition
             {
                 IFormatter formatter1 = new BinaryFormatter();
                 if (File.Exists(vectorFeatureStore))
-                stream1 = new FileStream(vectorFeatureStore, FileMode.Open, FileAccess.Write, FileShare.None);
+                stream1 = new FileStream(vectorFeatureStore, FileMode.Append, FileAccess.Write, FileShare.None);
                 else
                     stream1 = new FileStream(vectorFeatureStore, FileMode.Create, FileAccess.Write, FileShare.None);
 
