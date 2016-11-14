@@ -223,7 +223,7 @@ namespace HumanDetectionAndRecognition
             {
                 IFormatter formatter1 = new BinaryFormatter();
                 if (File.Exists(vectorFeatureStore))
-                stream1 = new FileStream(vectorFeatureStore, FileMode.Append, FileAccess.Write, FileShare.None);
+                stream1 = new FileStream(vectorFeatureStore, FileMode.Open, FileAccess.Write, FileShare.None);
                 else
                     stream1 = new FileStream(vectorFeatureStore, FileMode.Create, FileAccess.Write, FileShare.None);
 

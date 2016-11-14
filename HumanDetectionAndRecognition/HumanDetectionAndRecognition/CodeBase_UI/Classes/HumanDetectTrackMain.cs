@@ -62,9 +62,9 @@ namespace HumanDetectionAndRecognition
                 }
             }
             
-              humans = classify(connectedComp);
-            // trainImage(connectedComp[0].Silhouette);
-            // Save();
+             humans = classify(connectedComp);
+             //trainImage(connectedComp[0].Silhouette);
+             //Save();
              imgReturn = connectedComp[0].Silhouette;
             return imgReturn;
 
