@@ -30,6 +30,7 @@ namespace HumanDetectionAndRecognition
             _connectedCompObj = new ConnectedComponent();
             _tracking = new AppearanceBasdTracking();
             _classification = new Classification();
+            Load();
         }
         public Image<Gray, Byte> DetectAndTrack(Mat currentImage)
         {
@@ -60,9 +61,9 @@ namespace HumanDetectionAndRecognition
                     humans.Add(comp);
                 }
             }
-            Load();
-               humans = classify(connectedComp);
-             //trainImage(connectedComp[0].Silhouette);
+            
+              humans = classify(connectedComp);
+            // trainImage(connectedComp[0].Silhouette);
             // Save();
              imgReturn = connectedComp[0].Silhouette;
             return imgReturn;
