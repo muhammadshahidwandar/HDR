@@ -21,7 +21,7 @@ namespace HumanDetectionAndRecognition
     public partial class Form1 : Form
     {
         Capture capt = null;
-        HumanDetectTrackMain detecObj;
+        HumanDetectTrackMain detecObj = null;
 
         public Form1()
         {
@@ -32,26 +32,30 @@ namespace HumanDetectionAndRecognition
         private void timer1_Tick(object sender, EventArgs e)
         {
 
-      /*      Mat img;
-            Image<Gray, Byte> ret_image;
+            Mat img;
+            List<ComponentData> Humans;
+          //  Image<Gray, Byte> ret_image;
             img = capt.QueryFrame();
-            if (img != null)
-            {
-                ret_image = detecObj.DetectAndTrack(img);
-                imageBox1.Image = ret_image;
-            }
+            
+                Humans = detecObj.DetectAndTrack(img);
+                if (Humans.Count > 0)
+                {
+                    imageBox1.Image = Humans[Humans.Count - 1].Silhouette;
+                }
+            
 
-            */
+           
         }
 
         private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
         {
-            //capt = new Capture(openFileDialog1.FileName);
-            Mat img;
-            Image<Gray, Byte> ret_image;
-            img = CvInvoke.Imread(openFileDialog1.FileName, Emgu.CV.CvEnum.LoadImageType.AnyColor); //
-            ret_image = detecObj.DetectAndTrack(img);
-            imageBox1.Image = ret_image;
+            
+            capt = new Capture(openFileDialog1.FileName);
+            //Mat img;
+            //Image<Gray, Byte> ret_image;
+            //img = CvInvoke.Imread(openFileDialog1.FileName, Emgu.CV.CvEnum.LoadImageType.AnyColor); //
+            //ret_image = detecObj.DetectAndTrack(img);
+            //imageBox1.Image = ret_image;
 
         }
 
@@ -59,6 +63,11 @@ namespace HumanDetectionAndRecognition
         {
             openFileDialog1.ShowDialog();
             timer1.Enabled = true;
+
+        }
+
+        private void imageBox1_Click(object sender, EventArgs e)
+        {
 
         }
     }

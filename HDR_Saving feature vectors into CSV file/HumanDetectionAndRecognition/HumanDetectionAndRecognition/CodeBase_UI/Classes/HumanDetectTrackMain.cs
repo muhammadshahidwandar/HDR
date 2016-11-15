@@ -32,7 +32,7 @@ namespace HumanDetectionAndRecognition
             _classification = new Classification();
             Load();
         }
-        public Image<Gray, Byte> DetectAndTrack(Mat currentImage)
+        public List<ComponentData> DetectAndTrack(Mat currentImage)
         {
             Image<Gray, Byte> tmp2;
             Image<Gray, Byte> imgReturn;
@@ -43,7 +43,7 @@ namespace HumanDetectionAndRecognition
             imgYcc = currentImage.ToImage<Ycc, Byte>();
             Mat rect_12 = CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Cross, new Size(5, 5), new Point(3, 3));
 
-            //_bgSubrctObj.Apply(currentImage, currentImage);
+            _bgSubrctObj.Apply(currentImage, currentImage);
             imgReturn = currentImage.ToImage<Gray, Byte>();
             tmp2 = imgReturn.MorphologyEx(Emgu.CV.CvEnum.MorphOp.Close, rect_12, new Point(3, 3), 1, Emgu.CV.CvEnum.BorderType.Default, new MCvScalar());
             connectedComp = _connectedCompObj.Find_ConnectedComponent(tmp2);
@@ -61,12 +61,15 @@ namespace HumanDetectionAndRecognition
                     humans.Add(comp);
                 }
             }
-            
-         //    humans = classify(connectedComp);
-               trainImage(connectedComp[0].Silhouette);
-               Save();
-             imgReturn = connectedComp[0].Silhouette;
-            return imgReturn;
+
+            //    humans = classify(connectedComp);
+            if (humans.Count > 0) {
+                trainImage(connectedComp[0].Silhouette);
+                Save();
+            }
+               
+         //    imgReturn = connectedComp[0].Silhouette;
+            return humans;
 
             
         }

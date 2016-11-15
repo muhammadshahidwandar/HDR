@@ -35,12 +35,12 @@ namespace HumanDetectionAndRecognition
             FilleachObjectPar(inpImage.Clone());
             foreach (ComponentData comp in components)
             {
-                //if (comp.getHeight > 30 && comp.getWidth > 13 && comp.getWidth < 40)  //50,60
-                //{
+                if (comp.getHeight > 50 && comp.getWidth > 13 && comp.getWidth < 60)  //30,40
+                {
                     comp.Silhouette = ExtractImage(inpImage.Clone(), comp.UpperPoint.X, comp.LowerPoint.X, comp.LeftPoint.Y, comp.RightPoint.Y, comp.Label).Mul(255);
                     _tempComponent.Add(comp);
-                //}
-            }
+                }
+        }
             components = _tempComponent;
             return components;
         }
