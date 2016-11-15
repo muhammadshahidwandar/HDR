@@ -181,11 +181,9 @@ namespace HumanDetectionAndRecognition
                     }
                     string csvPath = "D:\\VectorFeature.csv";
                     var result = sb.ToString();
-                    File.AppendAllText(csvPath, result);
+                    File.WriteAllText(csvPath, result);
                     #endregion
-
-
-                    // MessageBox.Show(result);
+                                       
                 }
             }
             //#region Check For Next Contour
