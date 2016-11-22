@@ -22,7 +22,7 @@ namespace HumanDetectionAndRecognition
         public List<List<int>> _vectorsFeature = new List<List<int>>();
         public List<List<int>> _trainVF = new List<List<int>>();
         public string vectorFeatureStore = "D:\\vectorFeatureStore.bin";
-        int Threshold = 100;
+        //int Threshold = 300;
         #endregion
         /// <summary>
         /// This function take Connected Component and it only call another function Called ==> GetFeatureVector
@@ -57,29 +57,31 @@ namespace HumanDetectionAndRecognition
 
             //Retrun in Public Variable _vectorsFeature
             _vectorFeature = GetFeatureVector(image);
-
-            for (int i = 0; i < _trainVF.Count; i++)
+            if (_vectorFeature.Count > 0)
             {
-                for (int j = 0; j < 40; j++)
+                for (int i = 0; i < _trainVF.Count; i++)
+                {
+                    for (int j = 0; j < 40; j++)
                     {
                         _vectorDiss += Math.Abs(_vectorFeature[j] - _trainVF[i][j]);
                     }
                     _dist.Add(_vectorDiss);
                     _vectorDiss = 0;
-             }
-            _dist.Sort();
-            if (_dist.Count == 0)
-                return false;
-            _minDis = _dist[0];
+                }
+                _dist.Sort();
+                if (_dist.Count == 0)
+                    return false;
+                _minDis = _dist[0];
 
-            if (_minDis < Threshold)
-            {
-                MessageBox.Show("It's Human");
-               // MessageBox.Show("It's Human");
-                return true;
+                if (_minDis < Threshold)
+                {
+                    //MessageBox.Show("It's Human");
+                    // MessageBox.Show("It's Human");
+                    return true;
+                }
             }
 
-            MessageBox.Show("No it Isn't Human");
+            //MessageBox.Show("No it Isn't Human");
             return false;
         }
         /// <summary>
@@ -103,26 +105,8 @@ namespace HumanDetectionAndRecognition
             image2 = _image.Resize(40, 80, 0);  //20 ,40;
             //   CvInvoke.Canny(image2,image2, 100, 200); 
             //     Contour ctr = _image.FindContours(Emgu.CV.CvEnum.CHAIN_APPROX_METHOD.CV_CHAIN_APPROX_NONE, Emgu.CV.CvEnum.RETR_TYPE.CV_RETR_CCOMP);
-            contours = Classification.FindLargestContour(image2, image2);
-            // CvInvoke.FindContours(image2, contours, null, Emgu.CV.CvEnum.RetrType.List, Emgu.CV.CvEnum.ChainApproxMethod.LinkRuns);
+            contours = FindLargestContour(image2, image2);
             #endregion
-            #region Draw rectangle
-           image2.Draw(CvInvoke.BoundingRectangle(contours), new Gray(255), 1);
-            Point a = contours[0];
-            a.Y = a.Y - 9;
-            a.X = a.X - 40;
-
-            //Draw the label for each detected person
-            //ImgGray.Draw(name, ref font, new Point(f.rect.X - 2, f.rect.Y - 2), new Bgr(Color.LightGreen));
-            CvInvoke.PutText(
-                               image2,
-                                "    Person ",
-                                a,
-                                FontFace.HersheyComplex,
-                                0.3,
-                                new MCvScalar(255, 0, 0));
-            #endregion 
-            int total = contours.Size;
             #region Initialization
             _vectorFeature = new List<int>();
             _vectorFeature_left = new List<Point>();
@@ -153,7 +137,7 @@ namespace HumanDetectionAndRecognition
                 #endregion
                 else
                 {
-                    #region Select 10 Points From Left and Right
+                    #region Select 20 Points From Left and Right
                     _left_len = _vectorFeature_left.Count;
                     _right_len = _vectorFeature_right.Count;
                     if (_left_len >= 40)
@@ -199,7 +183,7 @@ namespace HumanDetectionAndRecognition
         /// </summary>
         /// <param name="list">list of connected components to be classified</param>
         /// <returns>list of Humans</returns>
-        public List<ComponentData> classify(List<ComponentData> list)
+        public List<ComponentData> classify(List<ComponentData> list,int Threshold)
         {
             List<ComponentData> humans = new List<ComponentData>();
             for (int i = 0; i < list.Count; i++)
@@ -261,7 +245,7 @@ namespace HumanDetectionAndRecognition
         /// Find Largest Contour 
         /// </summary>
 
-        public static VectorOfPoint FindLargestContour(IInputOutputArray cannyEdges, IInputOutputArray result)
+        public VectorOfPoint FindLargestContour(IInputOutputArray cannyEdges, IInputOutputArray result)
         {
             int largest_contour_index = 0;
             double largest_area = 0;
@@ -274,26 +258,30 @@ namespace HumanDetectionAndRecognition
 
                 CvInvoke.FindContours(cannyEdges, contours, hierachy, Emgu.CV.CvEnum.RetrType.External, Emgu.CV.CvEnum.ChainApproxMethod.ChainApproxNone);// RetrType.Tree, ChainApproxMethod.ChainApproxNone);
 
-                for (int i = 0; i < contours.Size; i++)
+                if (contours.Size > 0)
                 {
-                    MCvScalar color = new MCvScalar(0, 0, 255);
-
-                    double a = CvInvoke.ContourArea(contours[i], false);  //  Find the area of contour
-                    if (a > largest_area)
+                    for (int i = 0; i < contours.Size; i++)
                     {
-                        largest_area = a;
-                        largest_contour_index = i;                //Store the index of largest contour
+                        MCvScalar color = new MCvScalar(0, 0, 255);
+
+                        double a = CvInvoke.ContourArea(contours[i], false);  //  Find the area of contour
+                        if (a > largest_area)
+                        {
+                            largest_area = a;
+                            largest_contour_index = i;                //Store the index of largest contour
+                        }
+
+                        CvInvoke.DrawContours(result, contours, largest_contour_index, new MCvScalar(255, 0, 0), 5);
                     }
 
-                    CvInvoke.DrawContours(result, contours, largest_contour_index, new MCvScalar(255, 0, 0), 5);
+                    CvInvoke.DrawContours(result, contours, largest_contour_index, new MCvScalar(0, 0, 255), 1);//,LineType.EightConnected , hierachy);
+                    largestContour = new VectorOfPoint(contours[largest_contour_index].ToArray());
+                    return largestContour;
                 }
-
-                CvInvoke.DrawContours(result, contours, largest_contour_index, new MCvScalar(0, 0, 255), 1);//,LineType.EightConnected , hierachy);
-                largestContour = new VectorOfPoint(contours[largest_contour_index].ToArray());
             }
-
-            return largestContour;
-        }
+                return null;
+           
+           }
 
     }
 }

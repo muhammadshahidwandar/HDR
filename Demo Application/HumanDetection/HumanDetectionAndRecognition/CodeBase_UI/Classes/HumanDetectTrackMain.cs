@@ -10,7 +10,6 @@ using Emgu.Util;
 using Emgu.CV.Structure;
 using Emgu.CV.Util;
 using Emgu.CV.BgSegm;
-//using HumanDetectionAndRecognition;
 using System.Drawing;
 using Emgu.CV.CvEnum;
 namespace HumanDetectionAndRecognition
@@ -24,7 +23,7 @@ namespace HumanDetectionAndRecognition
         ConnectedComponent _connectedCompObj;
         AppearanceBasdTracking _tracking;
         Classification _classification;
-        int Threshold = 120;
+        int Threshold = 230;
         public HumanDetectTrackMain()
         {
             _bgSubrctObj = new BackgroundSubtractorMOG();
@@ -33,78 +32,79 @@ namespace HumanDetectionAndRecognition
             _classification = new Classification();
             Load();
         }
-        public Image<Gray, Byte> DetectAndTrack(Mat currentImage)
+        public Image<Bgr, Byte> DetectAndTrack(Mat currentImage)
         {
+            Mat resizeImg = new Mat();
             Image<Gray, Byte> tmp2;
-            VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint();
+            CvInvoke.Resize(currentImage, resizeImg, new Size(320, 240));
             Image<Gray, Byte> imgReturn;
             Image<Ycc, Byte> imgYcc;
+            Image<Bgr, Byte> imgBgr;
             List<ComponentData> connectedComp;
             List<ComponentData> humans = new List<ComponentData>();
+            VectorOfPoint contours = new VectorOfPoint();
             MaskData maskData = new MaskData();
             imgYcc = currentImage.ToImage<Ycc, Byte>();
+            imgBgr = currentImage.ToImage<Bgr, Byte>();
             Mat rect_12 = CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Cross, new Size(5, 5), new Point(3, 3));
 
-            //_bgSubrctObj.Apply(currentImage, currentImage);
+            _bgSubrctObj.Apply(currentImage, currentImage);
             imgReturn = currentImage.ToImage<Gray, Byte>();
             tmp2 = imgReturn.MorphologyEx(Emgu.CV.CvEnum.MorphOp.Close, rect_12, new Point(3, 3), 1, Emgu.CV.CvEnum.BorderType.Default, new MCvScalar());
             connectedComp = _connectedCompObj.Find_ConnectedComponent(tmp2);
-            foreach (ComponentData comp in connectedComp)
+          
+            
+     //       trainImage(connectedComp[0].Silhouette);
+     //       Save();
+           // imgReturn = tmp2;
+            humans = classify(connectedComp);
+            //imgReturn = objectLabel(humans, tmp2);
+            if (connectedComp.Count > 0)
             {
-                maskData.Mask = comp.Silhouette.Clone();
-                maskData.left = comp.LeftPoint;
-                maskData.Right = comp.RightPoint;
-                maskData.Top = comp.UpperPoint;
-                maskData.Bottom = comp.LowerPoint;
-                //comp.Label = 0;
-                comp.Label = (byte)_tracking.Track(imgYcc, maskData);// _tracking.Track(currentImage, maskData);
-                if (comp.Label != 255)
+                contours = _classification.FindLargestContour(tmp2, tmp2);
+                if (contours != null)
                 {
-                    humans.Add(comp);
+                    // CvInvoke.FindContours(tmp2, contours, null, Emgu.CV.CvEnum.RetrType.External, Emgu.CV.CvEnum.ChainApproxMethod.ChainApproxNone);
+                    imgBgr.Draw(CvInvoke.BoundingRectangle(contours), new Bgr(0, 255, 0), 1);
+                    Point a = contours[0];
+                    a.Y = a.Y - 2;
+                    a.X = a.X - 5;
+                    // Save();
+                    if (humans.Count > 0)
+                    {
+
+
+                        //Draw the label for each detected person
+                        //ImgGray.Draw(name, ref font, new Point(f.rect.X - 2, f.rect.Y - 2), new Bgr(Color.LightGreen));
+                        CvInvoke.PutText(
+                                            imgBgr,
+                                            "  Human ",
+                                            a,
+                                            FontFace.HersheyComplex,
+                                            0.3,
+                                            new MCvScalar(255, 0, 0));
+
+                    }
+                    if (humans.Count < 1)
+                    {
+
+
+                        //Draw the label for each detected person
+                        //ImgGray.Draw(name, ref font, new Point(f.rect.X - 2, f.rect.Y - 2), new Bgr(Color.LightGreen));
+                        CvInvoke.PutText(
+                                            imgBgr,
+                                            "Not a Human ",
+                                            a,
+                                            FontFace.HersheyComplex,
+                                            0.3,
+                                            new MCvScalar(255, 0, 0));
+
+                    }
                 }
             }
-             
-            // trainImage(connectedComp[0].Silhouette);
-             humans = classify(connectedComp);
-             CvInvoke.FindContours(tmp2, contours, null, Emgu.CV.CvEnum.RetrType.External, Emgu.CV.CvEnum.ChainApproxMethod.ChainApproxNone);
-             imgReturn.Draw(CvInvoke.BoundingRectangle(contours[0]), new Gray(255), 1);
-             Point a = contours[0][0];
-             a.Y = a.Y - 9;
-             a.X = a.X - 40;
-            // Save();
-            if(humans.Count>0)
-            {
-               
+            //imgReturn = connectedComp[0].Silhouette;
+            return imgBgr;
 
-                //Draw the label for each detected person
-                //ImgGray.Draw(name, ref font, new Point(f.rect.X - 2, f.rect.Y - 2), new Bgr(Color.LightGreen));
-                CvInvoke.PutText(
-                                    imgReturn,
-                                    "  Human ",
-                                    a,
-                                    FontFace.HersheyComplex,
-                                    0.3,
-                                    new MCvScalar(255, 0, 0));
-
-            }
-            if (humans.Count < 1)
-            {
-
-
-                //Draw the label for each detected person
-                //ImgGray.Draw(name, ref font, new Point(f.rect.X - 2, f.rect.Y - 2), new Bgr(Color.LightGreen));
-                CvInvoke.PutText(
-                                    imgReturn,
-                                    "  Not a Human ",
-                                    a,
-                                    FontFace.HersheyComplex,
-                                    0.3,
-                                    new MCvScalar(255, 0, 0));
-
-            }
-             //imgReturn = connectedComp[0].Silhouette;
-            return imgReturn;
-           
         }
         /// <summary>
         /// Get Feature Vector of current image only.
@@ -139,5 +139,54 @@ namespace HumanDetectionAndRecognition
                     humans.Add(list[i]);
             return humans;
         }
+ /*       /// <summary>
+        /// Moving Object Lablization Code
+        /// </summary>
+        /// <param name="List">human</param>
+        /// <param name="Image">imgReturn gray image of segmented Object</param>
+        /// <returns>Returned Image</returns>
+        public Image<Gray, Byte> objectLabel(List<ComponentData> humans, Image<Gray, Byte> imgReturn)
+        {
+            VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint();
+            Image<Gray, Byte> reslt;// = imgReturn;
+            reslt = imgReturn;
+            CvInvoke.FindContours(reslt, contours, null, Emgu.CV.CvEnum.RetrType.External, Emgu.CV.CvEnum.ChainApproxMethod.ChainApproxNone);
+            imgReturn.Draw(CvInvoke.BoundingRectangle(contours[0]), new Gray(255), 1);
+            Point a = contours[0][0];
+            a.Y = a.Y - 9;
+            a.X = a.X - 40;
+            // Save();
+            if (humans.Count > 0)
+            {
+
+
+                //Draw the label for each detected person
+                //ImgGray.Draw(name, ref font, new Point(f.rect.X - 2, f.rect.Y - 2), new Bgr(Color.LightGreen));
+                CvInvoke.PutText(
+                                     imgReturn,
+                                    " Human ",
+                                    a,
+                                    FontFace.HersheyComplex,
+                                    0.3,
+                                    new MCvScalar(255, 0, 0));
+
+            }
+            if (humans.Count < 1)
+            {
+
+
+                //Draw the label for each detected person
+                //ImgGray.Draw(name, ref font, new Point(f.rect.X - 2, f.rect.Y - 2), new Bgr(Color.LightGreen));
+                CvInvoke.PutText(
+                                     imgReturn,
+                                    "  Not a Human ",
+                                    a,
+                                    FontFace.HersheyComplex,
+                                    0.3,
+                                    new MCvScalar(255, 0, 0));
+
+            }
+            return imgReturn;
+        }*/
     }
 }

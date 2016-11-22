@@ -56,7 +56,7 @@
             // 
             // timer1
             // 
-            this.timer1.Interval = 80;
+            this.timer1.Interval = 50;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // openFileDialog1

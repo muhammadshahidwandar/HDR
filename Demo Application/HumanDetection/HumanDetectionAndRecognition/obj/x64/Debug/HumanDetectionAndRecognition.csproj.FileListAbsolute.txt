@@ -33,8 +33,6 @@ C:\Users\shahid\Documents\Visual Studio 2013\Projects\HumanDetectionAndRecogniti
 C:\Users\shahid\Documents\Visual Studio 2013\Projects\HumanDetectionAndRecognition\HumanDetectionAndRecognition\obj\x64\Debug\HumanDetectionAndRecognition.Properties.Resources.resources
 C:\Users\shahid\Documents\Visual Studio 2013\Projects\HumanDetectionAndRecognition\HumanDetectionAndRecognition\obj\x64\Debug\HumanDetectionAndRecognition.csproj.GenerateResource.Cache
 C:\Users\shahid\Documents\Visual Studio 2013\Projects\HumanDetection\HumanDetectionAndRecognition\bin\x64\Debug\HumanDetectionAndRecognition.exe.config
-C:\Users\shahid\Documents\Visual Studio 2013\Projects\HumanDetection\HumanDetectionAndRecognition\obj\x64\Debug\HumanDetectionAndRecognition.exe
-C:\Users\shahid\Documents\Visual Studio 2013\Projects\HumanDetection\HumanDetectionAndRecognition\obj\x64\Debug\HumanDetectionAndRecognition.pdb
 C:\Users\shahid\Documents\Visual Studio 2013\Projects\HumanDetection\HumanDetectionAndRecognition\bin\x64\Debug\HumanDetectionAndRecognition.exe
 C:\Users\shahid\Documents\Visual Studio 2013\Projects\HumanDetection\HumanDetectionAndRecognition\bin\x64\Debug\HumanDetectionAndRecognition.pdb
 C:\Users\shahid\Documents\Visual Studio 2013\Projects\HumanDetection\HumanDetectionAndRecognition\bin\x64\Debug\Emgu.CV.DebuggerVisualizers.VS2013.dll
@@ -47,7 +45,8 @@ C:\Users\shahid\Documents\Visual Studio 2013\Projects\HumanDetection\HumanDetect
 C:\Users\shahid\Documents\Visual Studio 2013\Projects\HumanDetection\HumanDetectionAndRecognition\bin\x64\Debug\Emgu.CV.World.xml
 C:\Users\shahid\Documents\Visual Studio 2013\Projects\HumanDetection\HumanDetectionAndRecognition\bin\x64\Debug\ZedGraph.xml
 C:\Users\shahid\Documents\Visual Studio 2013\Projects\HumanDetection\HumanDetectionAndRecognition\bin\x64\Debug\zh-CN\ZedGraph.resources.dll
-C:\Users\shahid\Documents\Visual Studio 2013\Projects\HumanDetection\HumanDetectionAndRecognition\obj\x64\Debug\HumanDetectionAndRecognition.csprojResolveAssemblyReference.cache
 C:\Users\shahid\Documents\Visual Studio 2013\Projects\HumanDetection\HumanDetectionAndRecognition\obj\x64\Debug\HumanDetectionAndRecognition.Form1.resources
 C:\Users\shahid\Documents\Visual Studio 2013\Projects\HumanDetection\HumanDetectionAndRecognition\obj\x64\Debug\HumanDetectionAndRecognition.Properties.Resources.resources
 C:\Users\shahid\Documents\Visual Studio 2013\Projects\HumanDetection\HumanDetectionAndRecognition\obj\x64\Debug\HumanDetectionAndRecognition.csproj.GenerateResource.Cache
+C:\Users\shahid\Documents\Visual Studio 2013\Projects\HumanDetection\HumanDetectionAndRecognition\obj\x64\Debug\HumanDetectionAndRecognition.exe
+C:\Users\shahid\Documents\Visual Studio 2013\Projects\HumanDetection\HumanDetectionAndRecognition\obj\x64\Debug\HumanDetectionAndRecognition.pdb
